@@ -2,6 +2,12 @@
 	<div>
 		<div class="row">
 			<div class="col-12">
+				<div class="btn-group">
+					<Button class="btn-success" @click="fetchCompleteOrders">Completed</Button>
+					<Button class="btn-info" @click="fetchShippingInProgressOrders">Shipping In Progress</Button>
+					<Button class="btn-warning active" @click="fetchOrders">Unpaid</Button>
+
+				</div>
 					<table class="table table-hover table-responsive-md">
 					  <thead>
 					    <tr class="bg-info">
@@ -29,9 +35,9 @@
 				            <!-- <p v-html="order.address.additional_information"></p> -->
 					      </td>
 					      <td>
-					      	<Button>
-					      		Details
-					      	</Button>
+					      	<Button size="small" type="info" @click="verifyPayment(order, o)">
+					      			Details
+					      		</Button>
 					      	<!-- <div class="col-md-12 mb-1 border border-info" v-for="(product, p) in order.products"> -->
 					      		<!-- {{product}} -->
 					      	    <!-- <p>Name: {{product.name}},</p> -->
@@ -41,7 +47,7 @@
 					      </td>				      
 					      <td>
 					      	<div class="btn-group">
-					      		<Button size="small" type="info" @click="pay(order, o)">
+					      		<Button size="small" type="info" @click="pay(order, o)" v-if="order.status=='pending'">
 					      			Pay
 					      		</Button>
 					      		<Button size="small" type="error" @click="calculateTotal(order.products, o)">
@@ -99,12 +105,61 @@
 				</div>
 			</div>
 		</Modal>
+		<Modal v-model="verifyPaymentModal":width="90" :closable="false" :mask-closable="false">
+			<div slot="header">
+				 Order Details Payment Pop Up
+			</div>
+			<div class="row justify-content-center" v-if="verifyPaymentment_data!=[]">
+				<div class="col-12 mb-2">
+				<h5>Shipping Adress</h5>				
+				 <p>{{address.Address}},  {{address.city}}, {{address.region}}</p>
+				 <p>Mobile: {{address.phone_number}}</p> 
+				 <p v-html="address.additional_information"></p> 
+				</div>
+
+				<div class="col-12 mb-2">
+					<h5>Products</h5>
+
+					<div class="row">
+					    <div class="col-4" v-for="(product, p) in verifyPaymentment_data.products">
+					    	<p>Name: {{product.name}},</p>
+					    	<p>Price: {{product.price}} /=</p>	
+					    	<p>Quantity: {{product.pivot.quantity}}</p>
+					    	<p>Size: {{product.size}}</p>
+					    	<p>Color: {{product.color}}</p>
+					    	<img v-bind:src="'/product_images/'+product.image_url" alt="Slider Image" class="img-thumbnail w-100" />
+					    </div>	
+					    <!-- <div class="col-8">	
+					    	
+					    </div> -->      	    
+					</div>
+				</div>
+
+
+				<div class="col-12 mb-2">
+					<h5>Payment Data</h5>
+					<p>Payment Mode: {{verifyPaymentment_data.payment_method}}</p>
+					<p v-if="paymentData!=null">Payment Code: {{paymentData.code}}</p>
+					<p v-if="paymentData!=null">Amount Received: {{paymentData.amount}}</p>
+					<p v-if="paymentData!=null">Balance: {{Number(verifyPaymentment_data.totalPrice)-Number(paymentData.amount)}} </p>
+				</div>
+			</div>
+		</Modal>
 	</div>
 </template>
 <script>
 	export default{
 		data(){
 			return {
+				isWorking:false,
+				address:[],
+				verifyPaymentment_data:[],				
+				verifyPaymentment:{
+					order:'',
+					amount:'',
+					code:''
+				},
+				paymentData:[],
 				orders:[],
 				index:-1,
 				isPaying:false,
@@ -113,6 +168,7 @@
 				element:0,
 				payment_data:[],
 				paymentModal:false,
+				verifyPaymentModal:false,
 				payment:{
 					order:'',
 					amount:'',
@@ -170,6 +226,35 @@
 				}else{
 					this.showError()
 				}
+			},
+			async fetchCompleteOrders(){
+				this.start()
+				const res = await this.callApi('get','/customer/product/fetchCompleteOrders')
+				if (res.status == 200) {
+					this.orders = res.data.data
+					this.stop()
+					this.products = this.orders.products
+				}else{
+					this.showError()
+				}
+			},
+			async fetchShippingInProgressOrders(){
+				this.start()
+				const res = await this.callApi('get','/customer/product/fetchShippingInProgressOrders')
+				if (res.status == 200) {
+					this.orders = res.data.data
+					this.stop()
+					this.products = this.orders.products
+				}else{
+					this.showError()
+				}
+			},
+			verifyPayment(order, index){
+				this.verifyPaymentment_data = order
+				this.index = index
+				this.address=order.address
+				this.paymentData=order.payment
+				this.verifyPaymentModal = true
 			},
 			pay(order, index){
 				this.payment_data = order

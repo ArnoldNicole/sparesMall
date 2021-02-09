@@ -42,15 +42,13 @@
                                 <div class="dropdown-menu">        
                                     <a href="/login" class="dropdown-item" v-if="$store.state.user==false">Login</a>
                                     <a href="/register" class="dropdown-item" v-if="$store.state.user==false">Register</a>
-                                    <a href="/help" class="dropdown-item">Help</a>
                                 </div>
                             </div>
                         </div>
                         <div class="navbar-nav ml-auto" v-if="$store.state.user">
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User Account</a>
-                                <div class="dropdown-menu">
-                                    <a href="/user/profile" class="dropdown-item">Profile</a>
+                                <div class="dropdown-menu">        
                                     <a href="/seller/account/index" v-if="$store.state.user.userType=='Admin'" class="dropdown-item">
                                         Seller Homepage
                                     </a> 

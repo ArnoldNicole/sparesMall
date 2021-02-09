@@ -256,4 +256,17 @@ class CustomerAjaxController extends Controller
       }
 
     }
+
+    public function fetchShippingInProgressOrders(){
+        $orders = auth()->user()->orders->where('status','Shipping In Progress');
+
+        return OrderResource::collection($orders);
+     }
+
+     public function fetchCompleteOrders(){
+        $orders = auth()->user()->orders->where('status','Completed');
+
+        return OrderResource::collection($orders);
+     }
+
 }

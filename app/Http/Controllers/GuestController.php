@@ -8,6 +8,7 @@ use App\Http\Resources\CartResource;
 use App\Models\User;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+// use TeamTNT\TNTSearch\TNTSearch;
 
 class GuestController extends Controller
 {
@@ -41,6 +42,8 @@ class GuestController extends Controller
         $query= $this->validate($request, [
                  'query'=>['required']
     ]);
-        return Product::search($query['query'])->get();
-    }
+    $results = Product::search($query['query'])->get();
+    return $results;
+}
+
 }

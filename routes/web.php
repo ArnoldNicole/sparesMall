@@ -94,6 +94,8 @@ Route::prefix('/customer')->middleware(['auth'])->group(function () {
 	Route::post('placeOrder','CustomerAjaxController@saveOrder');
 	Route::get('completeOrder','CustomerController@init');
 	Route::get('getOrders','CustomerAjaxController@orders');
+	Route::get('fetchCompleteOrders','CustomerAjaxController@fetchCompleteOrders');
+	Route::get('fetchShippingInProgressOrders','CustomerAjaxController@fetchShippingInProgressOrders');
 	Route::patch('orderPayment','CustomerAjaxController@orderPayment');
 
 	//search
