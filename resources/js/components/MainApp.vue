@@ -4,15 +4,15 @@
         <div class="top-bar">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-sm-4 font-weight-bold">
+                    <div class="col-sm-4 text-center font-weight-bold">
                         <i class="fa fa-envelope"></i>
-                        arnoldwamae2@gmail.com
+                        helpline@aseshopit.com
                     </div>
-                    <div class="col-sm-4 font-weight-bold text-center">
+                    <div class="col-sm-4 text-center font-weight-bold text-center">
                         <i class="fa fa-phone-alt"></i>
-                        YOUR TRUSTED SPARE PARTS DEALER
+                            SCHOOL SHOPPING AND DELIVERY
                     </div>
-                    <div class="col-sm-4 font-weight-bold">
+                    <div class="col-sm-4 text-center font-weight-bold">
                         <i class="fa fa-phone-alt"></i>
                         +254708509365
                     </div>
@@ -32,16 +32,19 @@
 
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto">
-                            <router-link to="/" class="nav-item nav-link active">Home</router-link>
-                            <router-link to="/browse/products" class="nav-item nav-link">Products</router-link>                            
-                            <router-link to="/customer/cart" class="nav-item nav-link">Cart</router-link>
-                            <router-link to="/customer/purchase/checkout" class="nav-item nav-link" v-if="$store.state.user">Checkout</router-link>
-                            <router-link to="/customer/account" class="nav-item nav-link" v-if="$store.state.user">My Account</router-link>
+                            <router-link to="/" class="nav-item nav-link" active-class="active" exact-active-class="font-weight-bold active text-primary">Home</router-link>
+                            <router-link to="/browse/products" class="nav-item nav-link" active-class="active" exact-active-class="font-weight-bold active text-primary">Products</router-link>                            
+                            <router-link to="/customer/cart" class="nav-item nav-link" active-class="active" exact-active-class="font-weight-bold active text-primary">Cart</router-link>
+                            <router-link to="/customer/purchase/checkout" class="nav-item nav-link" active-class="active" exact-active-class="font-weight-bold active text-primary" v-if="$store.state.user">Checkout</router-link>
+                            <router-link to="/customer/account" class="nav-item nav-link" active-class="active" exact-active-class="font-weight-bold active text-primary" v-if="$store.state.user">My Account</router-link>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">More</a>
                                 <div class="dropdown-menu">        
                                     <a href="/login" class="dropdown-item" v-if="$store.state.user==false">Login</a>
                                     <a href="/register" class="dropdown-item" v-if="$store.state.user==false">Register</a>
+                                    <router-link class="dropdown-item" to="/about_us">About Us</router-link>
+                                    <router-link class="dropdown-item" to="/terms_and_conditions">Terms of Service</router-link>
+                                    <router-link class="dropdown-item" to="/privacy_policy">Privacy Policy</router-link>
                                 </div>
                             </div>
                         </div>
@@ -65,22 +68,18 @@
         <!-- Bottom Bar Start -->
         <div class="bottom-bar">
             <div class="container-fluid">
-                <div class="row align-items-center">
-                    <div class="col-md-3">
+                <div class="row">
+                    <div class="col-md-2">
                         <div class="logo">                            
-                                <img src="/img/logo.png" alt="Logo">
+                                <img src="/img/logo.png" class="img-fluid w-50 m-2 rounded-circle" alt="Logo">
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <search/>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="user">
-                            <!-- <a href="wishlist.html" class="btn wishlist">
-                                <i class="fa fa-heart"></i>
-                                <span>(0)</span>
-                            </a> -->
-                            <router-link to="/customer/cart" class="btn cart">
+                            <router-link to="/customer/cart" class="btn cart m-2">
                                 <i class="fa fa-shopping-cart"></i>
                                 <span v-if="$store.state.cart">{{$store.state.cart.items}}</span>
                             </router-link>
@@ -89,59 +88,17 @@
                 </div>
             </div>
         </div>
-        <!-- Bottom Bar End -->
 
-        <!-- <div class="header mt-1">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-2">
-                        <nav class="navbar bg-info">
-                            <ul class="navbar-nav border border-right border-dark">
-                                <li class="nav-item">
-                                    <a class="nav-link" href="/"><i class="fa fa-home"></i>Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#"><i class="fa fa-shopping-bag"></i>Best Selling</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#"><i class="fa fa-plus-square"></i>New Arrivals</a>
-                                </li>
-                                
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="col-md-10">
-                        <router-view>
-                            
-                        </router-view>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-        <div class=" container-fluid">
-            <router-view>
-                    
+        <div class="container-fluid">
+            <router-view>                    
             </router-view>
         </div>
 
         <featured-product/>
 
-        <!-- Brand Start -->
-        <div class="brand">
-            <div class="container-fluid">
-                <div class="brand-slider">
-                    <div class="brand-item"><img src="/img/toyota.png" alt="Toyota"></div>                    
-                    <div class="brand-item"><img src="/img/mercedez.png" alt="Mercedez"></div>
-                    <div class="brand-item"><img src="/img/volkswagen.png" alt="Volkswagen"></div>
-                    <div class="brand-item"><img src="/img/bmw.svg" alt="BMW"></div>
-                </div>
-            </div>
-        </div>
-        <!-- Brand End -->
-
         <div class="feature">
             <div class="container-fluid">
-                <div class="row align-items-center">
+                <div class="row align-items-center justify-content-center">
                     <div class="col-lg-3 col-md-6 feature-col">
                         <div class="feature-content">
                             <i class="fab fa-cc-mastercard"></i>
@@ -156,16 +113,7 @@
                             <i class="fa fa-truck"></i>
                             <h2>Country Wide Delivery</h2>
                             <p>
-                                We deliver all over Kenya and free for select locations
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 feature-col">
-                        <div class="feature-content">
-                            <i class="fa fa-sync-alt"></i>
-                            <h2>15 Days Return</h2>
-                            <p>
-                                 Free to think otherwise for upto 15days
+                                We deliver in <b>Schools</b> all over Kenya and free for select locations
                             </p>
                         </div>
                     </div>
@@ -174,7 +122,7 @@
                             <i class="fa fa-comments"></i>
                             <h2>24/7 Support</h2>
                             <p>
-                                This is a joke we are always offline haha
+                                Always Online For You
                             </p>
                         </div>
                     </div>
@@ -189,9 +137,9 @@
                         <div class="footer-widget">
                             <h2>Get in Touch</h2>
                             <div class="contact-info">
-                                <p><i class="fa fa-map-marker"></i>44 STAGE, Dandora</p>
-                                <p><i class="fa fa-envelope"></i>arnoldwamae@gmail.com</p>
-                                <p><i class="fa fa-phone"></i>+254 7 085 0936 5</p>
+                                <p><i class="fa fa-map-marker"></i>Kakamega Kenya</p>
+                                <p><i class="fa fa-envelope"></i>help@aseshopit.com</p>
+                                <p><i class="fa fa-phone"></i><a href="tel:+254708509365">0708509XXX</a></p>
                             </div>
                         </div>
                     </div>
@@ -201,8 +149,8 @@
                             <h2>Follow Us</h2>
                             <div class="contact-info">
                                 <div class="social">
-                                    <a href="https://twitter.com/wamae_arnold"><i class="fab fa-twitter"></i></a>
-                                    <a href="https://facebook.com/me_arnoldnyaga"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="https://twitter.com/ase_ltd"><i class="fab fa-twitter"></i></a>
+                                    <a href="https://facebook.com/ase_ltd"><i class="fab fa-facebook-f"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -212,9 +160,9 @@
                         <div class="footer-widget">
                             <h2>Company Info</h2>
                             <ul>
-                                <li><a href="#">About Us</a></li>
-                                <li><a href="#">Privacy Policy</a></li>
-                                <li><a href="#">Terms & Condition</a></li>
+                               <li><router-link to="/about_us">About Us</router-link></li>
+                               <li><router-link to="/terms_and_conditions">Terms & Conditions</router-link></li>
+                               <li><router-link to="/privacy_policy">Privacy Policy</router-link></li>
                             </ul>
                         </div>
                     </div>
@@ -223,7 +171,7 @@
                         <div class="footer-widget">
                             <h2>Purchase Info</h2>
                             <ul>
-                                <li><a href="#">Pyament Policy</a></li>
+                                <li><a href="#">Payment Policy</a></li>
                                 <li><a href="#">Shipping Policy</a></li>
                                 <li><a href="#">Return Policy</a></li>
                             </ul>
@@ -273,6 +221,9 @@
      created(){     
        this.$store.commit('setUpdateUser', this.user)
        this.$store.commit('setUpdateCart', this.cart)       
-       }
+       },
+    mounted(){
+        window.scrollTo(0,0)
+    }
     }
 </script>t>

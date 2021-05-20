@@ -20,7 +20,7 @@ class GuestAjaxController extends Controller
    }
 
    public function products(){
-   	return ProductResource::collection(Product::orderBy('created_at','asc')->take(15)->get());
+   	return ProductResource::collection(Product::orderBy('created_at','asc')->take(30)->get());
    }
    public function product(Product $product){
       if ($product) {

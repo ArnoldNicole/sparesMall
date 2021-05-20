@@ -4,7 +4,7 @@
 			<div class="col-md-4">
 			    <div class="product-content">
 			        <div class="title"><h2>{{data.name}}</h2></div>
-			        <div class="price">
+			        <div class="price m-3">
 			            <h4>Price:</h4>
 			            <p><span>KSH {{data.price}}</span></p>
 			        </div>
@@ -16,8 +16,8 @@
 			        </div>
 			        <div class="p-color m-3">
 			            <h4>Color:</h4>
-			            <div class="btn-group btn-group-sm">
-			                <button type="button" class="btn">{{data.color}}</button>		               
+			            <div class="btn-group btn-group-sm" >
+			                <h2 class="font-weight-bold" :style="'color:'+data.color+';'">{{data.color}}</h2>		               
 			            </div> 
 			        </div>
 			        <div class="action">
@@ -35,20 +35,20 @@
 				            <li class="nav-item">
 				                <a class="nav-link" data-toggle="pill" href="#specification">Specification</a>
 				            </li>
-				           <!--  <li class="nav-item">
-				                <a class="nav-link" data-toggle="pill" href="#reviews">Reviews</a>
-				            </li> -->
+				            <li class="nav-item">
+				                <a class="nav-link" data-toggle="pill" href="#reviews">Photos</a>
+				            </li>
 				        </ul>
 
 				        <div class="tab-content">
 				            <div id="description" class="container tab-pane active">
 				                <h4>Product description</h4>
-				                <p v-html="data.description">
-				                </p>
-				                <img v-bind:src="'/product_images/'+data.image_url" alt="Slider Image" class="w-100" />
+				                <div class="card-category" v-html="data.description">
+				                </div>
+				                <img v-bind:src="'/product_images/'+data.image_url" alt="Slider Image" class="w-75 img-fluid" />
 				            </div>
 				            <div id="specification" class="container tab-pane fade">
-				                <h4>Other Details</h4>
+				                <h4 class="card-title">Other Details</h4>
 				                <ul>			                    
 				                    <li>{{data.year_of_manufacture}}</li>
 				                    <li>{{data.country}}</li>
@@ -56,45 +56,18 @@
 				                    <li>{{data.status}}</li>
 				                </ul>
 				            </div>
-				            <!-- <div id="reviews" class="container tab-pane fade">
-				                <div class="reviews-submitted">
-				                    <div class="reviewer">Phasellus Gravida - <span>01 Jan 2020</span></div>
-				                    <div class="ratting">
-				                        <i class="fa fa-star"></i>
-				                        <i class="fa fa-star"></i>
-				                        <i class="fa fa-star"></i>
-				                        <i class="fa fa-star"></i>
-				                        <i class="fa fa-star"></i>
-				                    </div>
-				                    <p>
-				                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.
-				                    </p>
-				                </div>
-				                <div class="reviews-submit">
-				                    <h4>Give your Review:</h4>
-				                    <div class="ratting">
-				                        <i class="far fa-star"></i>
-				                        <i class="far fa-star"></i>
-				                        <i class="far fa-star"></i>
-				                        <i class="far fa-star"></i>
-				                        <i class="far fa-star"></i>
-				                    </div>
-				                    <div class="row form">
-				                        <div class="col-sm-6">
-				                            <input type="text" placeholder="Name">
-				                        </div>
-				                        <div class="col-sm-6">
-				                            <input type="email" placeholder="Email">
-				                        </div>
-				                        <div class="col-sm-12">
-				                            <textarea placeholder="Review"></textarea>
-				                        </div>
-				                        <div class="col-sm-12">
-				                            <button>Submit</button>
-				                        </div>
-				                    </div>
-				                </div>
-				            </div> -->
+				            <div id="reviews" class="container tab-pane fade" v-if="data!=''">
+				                <div class="row justify-content-center mt-1" v-if="data.images.length">
+									<div class="col-md-4" v-for="(file,f) in data.images" :key="f">
+										<img :src="'/product_photos/'+file.image" class="img-fluid">
+										<hr>
+										<p>{{file.caption}}</p>
+									</div>
+								</div>
+								<div v-else>
+									<img v-bind:src="'/product_images/'+data.image_url" alt="Slider Image" class="w-100 img-fluid img-thumbnail" />
+								</div>
+				            </div>
 				        </div>
 				    </div>
 				</div>
@@ -117,7 +90,7 @@
 	export default{
 		data(){
 			return {
-				data:[],
+				data:'',
 				missingProduct:false,
 			}
 		},
@@ -133,6 +106,9 @@
 				this.swr()
 				this.missingProduct = true
 			}
-		}
+		},
+		mounted(){
+        window.scrollTo(0,0)
+    }
 	}
 </script>

@@ -25,7 +25,7 @@ class ProductFactory extends Factory
             'name' => $this->faker->name,
             'year_of_manufacture' => $this->faker->year,
             'price' => $this->faker->numberBetween(1000,9999),
-            'image_url' => '1612538664.jpg', // password
+            'image_url' => '1612538664.jpg', 
             'country'=>$this->faker->country,
             'manufacturer'=>$this->faker->company,
             'color'=>$this->faker->colorName,

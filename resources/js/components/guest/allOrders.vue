@@ -3,9 +3,9 @@
 		<div class="row">
 			<div class="col-12">
 				<div class="btn-group">
-					<Button class="btn-success" @click="fetchCompleteOrders">Completed</Button>
-					<Button class="btn-info" @click="fetchShippingInProgressOrders">Shipping In Progress</Button>
-					<Button class="btn-warning active" @click="fetchOrders">Unpaid</Button>
+					<button class="btn btn-primary" @click="fetchCompleteOrders">Completed</button>
+					<button class="btn btn-info" @click="fetchShippingInProgressOrders">Shipping In Progress</button>
+					<button class="btn btn-warning" @click="fetchOrders">Unpaid</button>
 
 				</div>
 					<table class="table table-hover table-responsive-md">
@@ -60,9 +60,9 @@
 					</table>
 			</div>		
 		</div>
-		<Modal v-model="paymentModal" :closable="false" :mask-closable="false">
+		<Modal v-model="paymentModal" :closable="true" :mask-closable="false" footer-hide :styles="{top:'20px'}">
 			<div slot="header">
-				Order Payment Modal
+				Follow The Steps Below to pay your order
 			</div>
 			<div class="row justify-content-center">
 				<div class="col-8" v-if="payment_data.payment_method=='Eazzy Pay'">
@@ -81,31 +81,31 @@
 				<div class="col-8" v-if="payment_data.payment_method=='Mpesa'">
 					<h5 class="text-center text-success">MPESA PAYMENT INSTRUCTIONS</h5>
 					<ol class="">
-						<li>Go To Mpesa</li>
-						<li>Select Lipa na Mpesa</li>
-						<li>Enter business Numer as <code>XXXXXX</code></li>
-						<li>Enter account as <code> {{payment_data.address.phone_number+payment_data.id}}</code>
+						<li>Ensure the phone number registered on our platform is on</li>
+						<li>Click on the Complete Payment Button Below</li>
+						<li>AFter a success message, check your phone</li>
+						<li>Enter Your Mpesa Pin and continue.
 						</li>
-						<li>Enter amount as <code>{{Number(payment_data.totalPrice)-Number(payment_data.amount_received)}} /=</code>
+						<li>Ensure Amount Billled is <code>{{Number(payment_data.totalPrice)-Number(payment_data.amount_received)}} /=</code>
 						</li>
-						<li>In the Payment Input below Enter the MPESA Code Received.</li>
+						<li>Check Back After a few seconds for the payment status</li>
 					</ol>
 				</div>
 				<div class="col-8" v-if="payment_data.payment_method=='Cash On Delivery'">
 					Currently we are not providing Cash On Delivery. Check Back Later.
 				</div>
 
-				<div class="col-12">
+				<!-- <div class="col-12">
 					<label>Payment Code</label>
 					<input type="text" v-model="payment.code"  class="form-control" required placeholder="PH76G546H">
 					<p class="text-danger">UnderPaying or Over Paying will lead your order being void, while refunds are possible, it`s always not worth. <strong>Enter Exact Amounts</strong></p>
-				</div>
+				</div> -->
 				<div class="col-md-12">
-					<Button @click="submitPayment" :loading="isPaying" :disabled="isPaying">{{isPaying ? 'Processing': 'Complete Payment'}}</Button>
+					<Button type="success" @click="submitPayment" :loading="isPaying" :disabled="isPaying">{{isPaying ? 'Processing': 'Complete Payment'}} <i class="fa fa-money" aria-hidden="true"></i></Button>
 				</div>
 			</div>
 		</Modal>
-		<Modal v-model="verifyPaymentModal":width="90" :closable="false" :mask-closable="false">
+		<Modal v-model="verifyPaymentModal" fullscreen scrollable :closable="true" :mask-closable="false" footer-hide>
 			<div slot="header">
 				 Order Details Payment Pop Up
 			</div>
@@ -121,13 +121,13 @@
 					<h5>Products</h5>
 
 					<div class="row">
-					    <div class="col-4" v-for="(product, p) in verifyPaymentment_data.products">
+					    <div class="col-md-3" v-for="(product, p) in verifyPaymentment_data.products" :key="p">
 					    	<p>Name: {{product.name}},</p>
 					    	<p>Price: {{product.price}} /=</p>	
 					    	<p>Quantity: {{product.pivot.quantity}}</p>
 					    	<p>Size: {{product.size}}</p>
 					    	<p>Color: {{product.color}}</p>
-					    	<img v-bind:src="'/product_images/'+product.image_url" alt="Slider Image" class="img-thumbnail w-100" />
+					    	<img v-bind:src="'/product_images/'+product.image_url" alt="Slider Image" class="img-thumbnail img-fluid w-75" />
 					    </div>	
 					    <!-- <div class="col-8">	
 					    	
@@ -172,32 +172,27 @@
 				payment:{
 					order:'',
 					amount:'',
-					code:''
 				}
 			}
 		},
 		methods:{
 			async submitPayment(){
 				this.isPaying = true 
-				if (this.payment.code=='') {
-					this.isPaying = false
-					return this.e('PLease Provide a Code')
-				}
 				let obj = {
 					order: this.payment_data.id,
 					amount:Number(this.payment_data.totalPrice)-Number(this.payment_data.amount_received),
-					code:this.payment.code,
 				}
 				this.payment = obj
 				this.start()
-			 const paymentRequest = await this.callApi('patch','/customer/product/orderPayment', this.payment)
-			 if (paymentRequest.status == 200) {
+			 const paymentRequest = await this.callApi('post','/customer/product/orderPayment', this.payment)
+			 if (paymentRequest.status == 201) {
 			 	this.stop()
 			 	this.orders[this.index].status = 'Paid, Awaiting Confirmation';
 			 	this.paymentModal = false
 			 	this.payment_data = []
 			 	this.payment = ''
-			 	this.isPaying = false
+			 	this.isPaying = false,
+				 this.s('Success, Please check your phone')
 			 }else{
 			 	this.isPaying = false
 			 	this.showError()

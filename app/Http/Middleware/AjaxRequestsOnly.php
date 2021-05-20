@@ -20,7 +20,7 @@ class AjaxRequestsOnly
             return $next($request);
         }
         else{
-            abort(405, "Permission denied to Route");
+            return redirect('/');
         }
     }
 }

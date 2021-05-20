@@ -48,4 +48,7 @@ class Product extends Model
     {
         return $this->belongsToMany(Basket::class)->withPivot('quantity');
     }
+    public function images(){
+        return $this->hasMany(Image::class);
+    }
 }

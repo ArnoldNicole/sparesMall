@@ -13,12 +13,30 @@ import AllProducts from './components/guest/Products'
 import CheckOut from './components/guest/Checkout'
 import Account from './components/guest/Account'
 import allOrders from './components/guest/allOrders'
+import About from './components/guest/About'
+import TermsAndConditions from './components/guest/TermsAndConditions'
+import PrivacyPolicy from './components/guest/PrivacyPolicy'
 
 
 const routes = [
 	{
 	 	path: '/',
 	 	component: Index,
+	},
+	{
+		path: '/about_us',
+	 	component: About,
+		name: "About Us"	
+	},
+	{
+		path: '/terms_and_conditions',
+	 	component: TermsAndConditions,
+		name: "Terms and Conditions"	
+	},
+	{
+		path: '/privacy_policy',
+	 	component: PrivacyPolicy,
+		name: "Privacy Policy"	
 	},
 	{
 		path: '/customer/product/description/:id',

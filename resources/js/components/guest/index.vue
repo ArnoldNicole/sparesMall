@@ -1,6 +1,6 @@
 <template>
 	<div class="row justify-content-center  pt-1">
-		<div class="col-md-4 pb-4 header-slider-item" v-for="(item, i) in items">		  
+		<div class="col-md-2 pb-2 header-slider-item" v-for="(item, i) in items" :key="i">		  
 		  	<img v-bind:src="'/product_images/'+item.image_url" alt="Slider Image" class="img-fluid img-thumbnail" />
 		  	<div class="header-slider-caption text-center">
 		  		<p>{{item.name}}</p>

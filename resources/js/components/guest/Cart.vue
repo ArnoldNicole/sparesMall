@@ -5,8 +5,8 @@
 	            <div class="col-md-12">
 	                <div class="card">
 	                	<div class="card-body">	                		
-	                	
-	                		        <table class="table table-bordered" v-if="$store.state.cart">
+								<div class="table-responsive>">
+	                		        <table class="table table-bordered table-hover">
 	                		            <thead class="thead-dark">
 	                		                <tr>
 	                		                    <th>Product</th>
@@ -16,8 +16,8 @@
 	                		                    <th>Action</th>
 	                		                </tr>
 	                		            </thead>
-	                		            <tbody>
-	                		                <tr v-for="(product, p) in $store.state.cart.products">
+	                		            <tbody v-if="$store.state.cart">
+	                		                <tr v-for="(product, p) in $store.state.cart.products" :key="p">
 	                		                    <td>
 	                		                        <div class="img">
 	                		                            <router-link :to="'/customer/product/description/'+product.id"><img v-bind:src="'/product_images/'+product.image_url" :alt="product.name"></router-link>
@@ -50,16 +50,18 @@
 	                		                    <td>
 	                		                       Grand Total
 	                		                    </td>
-	                		                    <td>Ksh {{totalPrice}}</td>
-	                		                    <td>
-	                		                    </td>
-	                		                    <td>
-	                		                    </td>
+	                		                    <td colspan="3">Ksh {{totalPrice}}</td>
+	                		                    
 	                		                </tr>
 
 	                		            </tbody>
+										<tbody v-else>
+											<tr>
+												<td colspan="5" class="text-center">No Items In Cart. <router-link to="/browse/products"> Choose Products Here</router-link></td>
+											</tr>
+										</tbody>
 	                		        </table>
-	                		        <!-- {{$store.state.cart.products}} -->
+								</div>
 	                	</div>
 	                </div>
 	            </div>

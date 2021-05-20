@@ -1,11 +1,12 @@
 <template>
     <div class="featured-product product">
+        <hr>
         <div class="container-fluid" v-if="featuredProducts.length">
             <div class="section-header">
                 <h1 class="text-center"> FEATURED PRODUCTS</h1>
             </div>
-            <div class="row justify-content-center product-slider product-slider-4">
-                <div class="col-lg-3" v-for="(product ,p) in featuredProducts" v-if="featuredProducts.length">
+            <div class="row justify-content-center product-slider product-slider-4" v-if="featuredProducts.length">
+                <div class="col-lg-3" v-for="(product ,p) in featuredProducts" :key="p">
                     <div class="product-item">
                         <div class="product-title">
                             <a href="#">{{product.name}}</a>

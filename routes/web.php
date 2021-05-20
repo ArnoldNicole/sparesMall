@@ -44,7 +44,8 @@ Route::prefix('/seller')->middleware(['auth','seller'])->group(function () {
 	//list
 	//close		
 	});
-
+	Route::post('product_images/upload','Images\ProductImageController@uploadImage');
+	Route::apiResource('product_images', Images\ProductImageController::class);
 	Route::prefix('categories')->group(function () {
 		Route::post('new','SellerAjaxController@create_category');
 		Route::get('all', 'SellerAjaxController@categories');
@@ -96,7 +97,8 @@ Route::prefix('/customer')->middleware(['auth'])->group(function () {
 	Route::get('getOrders','CustomerAjaxController@orders');
 	Route::get('fetchCompleteOrders','CustomerAjaxController@fetchCompleteOrders');
 	Route::get('fetchShippingInProgressOrders','CustomerAjaxController@fetchShippingInProgressOrders');
-	Route::patch('orderPayment','CustomerAjaxController@orderPayment');
+	// Route::patch('orderPayment','CustomerAjaxController@orderPayment');
+	Route::apiResource('orderPayment', Mpesa\MpesaTransactionController::class);
 
 	//search
 	//buy	

@@ -2,8 +2,7 @@
     <div class="layout">
             <Layout>
                 <Header :style="{width: '100%'}">
-                    <Menu mode="horizontal" theme="dark" active-name="1">
-                        <div class="layout-logo"></div>
+                    <Menu mode="horizontal" theme="primary" active-name="1">
                         <div class="layout-nav">
                             <MenuItem name="1" to="/seller/account/index">
                                 <Icon type="ios-navigate"></Icon>

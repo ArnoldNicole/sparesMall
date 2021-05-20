@@ -12,7 +12,7 @@
 	                                <input class="form-control" v-model="data.phone_number" type="text" placeholder="Mobile No">
 	                            </div>
 	                            <div class="col-md-12">
-	                                <label>Address</label>
+	                                <label>Address: Enter Student School Name:</label>
 	                                <input class="form-control" v-model="data.Address" type="text" placeholder="Address">
 	                            </div>
 	                            <div class="col-md-6">
@@ -51,7 +51,7 @@
 	                <div class="checkout-inner mb-1" v-if="address.length">
 	                    <div class="billing-address">
 	                        <h2>Select Billing Address <span class="float-right text-info  font-weight-bold" @click="hasAdresses=false">Add New</span></h2>
-	                        <div class="row"  v-for="(adres, a) in address" :key="adres.id">
+	                        <div class="row"  v-for="(adres, a) in address" :key="a">
 	                        	<div class="col-md-12 mb-2">
 	                        	<div class="card">
 	                        		<div class="card-body"> 				
@@ -71,7 +71,7 @@
 	                <div class="checkout-inner">
 	                    <div class="checkout-summary">
 	                        <h1>Cart Total</h1>
-	                        <div v-for="(product, p) in $store.state.cart.products">
+	                        <div v-for="(product, p) in $store.state.cart.products" :key="p">
 	                        	<p>{{product.name}}<small>&nbsp;{{product.pivot.quantity}}  Piece(s)</small><span> : <code>KSH</code> {{product.price*product.pivot.quantity}}</span></p>
 	                        </div>
 	                        <hr>
@@ -94,7 +94,7 @@
 	                           </div>
 	                           <div class="payment-content" id="payment-1-show">
 	                               <p>
-	                                   We`ll give you our paybill in the next step
+	                                   We`ll give you our Till Number in the next step
 	                               </p>
 	                           </div>
 	                       </div>
@@ -109,7 +109,7 @@
 	                               </p>
 	                           </div>
 	                       </div> -->
-	                       <div class="payment-method">
+	                       <!-- <div class="payment-method">
 	                           <div class="custom-control custom-radio">
 	                               <input v-model="orderData.paymentMethod" type="radio" value="Eazzy Pay" class="custom-control-input" id="payment-3" name="payment">
 	                               <label class="custom-control-label" for="payment-3">Eazzy Pay</label>
@@ -119,9 +119,9 @@
 	                                  Use your Banking app to make Payments
 	                               </p>
 	                           </div>
-	                       </div>	                        
+	                       </div>	                         -->
 	                   </div>
-	                   <div class="checkout-btn" v-if="$store.state.cart.products">
+	                   <div class="checkout-btn" v-if="$store.state.cart.products.length">
 	                       <Button @click="placeOrder" :loading="placingOrder" :disabled="placingOrder"><span class="text-sm">{{placingOrder ? 'Ordering...' : 'Place Order'}}</span></Button>
 	                   </div>
 	               </div>

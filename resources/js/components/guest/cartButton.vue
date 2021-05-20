@@ -1,8 +1,8 @@
 <template>
 	<div>		
 		<div v-if="!isChecking" :loading="isChecking">
-			<Button class="btn btn-danger" v-if="showRemove" @click="removeProduct"><i class="fa fa-shopping-cart"></i>{{isAdding ? 'Removing..' : 'Remove From Cart'}}</Button>
-			<Button class="btn btn-succes" @click="addToCart" v-else :loading="isAdding" :disabled="isAdding"><i class="fa fa-shopping-cart"></i>{{isAdding ? 'Adding..' : 'Add to Cart'}}</Button>
+			<Button type="error" v-if="showRemove" @click="removeProduct"><i class="fa fa-shopping-cart"></i>{{isAdding ? 'Removing..' : 'Remove From Cart'}}</Button>
+			<Button type="success"  @click="addToCart" v-else :loading="isAdding" :disabled="isAdding"><i class="fa fa-shopping-cart"></i>{{isAdding ? 'Adding..' : ''}}</Button>
 		</div>
 	</div>
 </template>
@@ -101,11 +101,16 @@
 		},
 		async created(){
 			this.isChecking = true;
+			let id = 0;
+			if(this.$route.path == '/browse/products'){
+				id=this.product.id
+			}else{
+				id = this.$route.params.id
+			}
 			//check status in cart
-			const inCartReq = await this.callApi('post','/customer/product/checkCart/'+this.$route.params.id)
+			const inCartReq = await this.callApi('post','/customer/product/checkCart/'+id)
 			if (inCartReq.status==401) {
 				this.isChecking = false
-				this.i('To add products to Cart, you`ll be required to login')
 			}else{
 				if (inCartReq.status == 200) {
 					this.showRemove = true
@@ -116,7 +121,7 @@
 						this.isChecking = false
 					}else{
 						if (inCartReq.status ==404) {
-							this.e('Missing Product. Redirecting to Homepage')
+							this.e('Missing Product')
 							// window.location = '/'
 							}else{
 							this.isChecking = false

@@ -30,6 +30,8 @@ class ProductResource extends JsonResource
             'status'=>$this->status,
             'category'=>$this->category->categoryName,
             'created_at'=>$this->created_at,
+            'images'=>$this->images,
         ];
     }
 }
+

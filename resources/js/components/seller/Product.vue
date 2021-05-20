@@ -18,8 +18,8 @@
 				      <th scope="col">Action</th>
 				    </tr>
 				  </thead>
-				  <tbody>
-				    <tr v-for="(product, p) in products" :key="product.id" v-if="products.length">
+				  <tbody v-if="products.length">
+				    <tr v-for="(product, p) in products" :key="product.id" >
 				      <td>{{product.id}}</td>
 				      <td>{{product.name}}</td>
 				      <td>{{product.year_of_manufacture}}</td>
@@ -27,11 +27,11 @@
 				      <td>{{product.status}}</td>					      
 				      <td>{{product.created_at}}</td>
 				      <td>
-				      	<Button type="primary" size="small" @click="showEditModal(product, p)">Edit</Button>
+				      	<Button type="primary" size="small"  @click="showAddImageModal(product)">Photo<i class="fa fa-file-image-o" aria-hidden="true"></i></Button>
 				      	<router-link :to="'/customer/product/description/'+product.id">
-				      	<Button type="primary" size="small">Description</Button>
+				      	<Button type="primary" size="small"><i class="fa fa-file-image-o" aria-hidden="true"></i></Button>
 				      </router-link>
-				      	<Button type="error" size="small" @click="deleteProduct(product, i)" :loading="product.isDeleting">Delete
+				      	<Button type="error" size="small" @click="deleteProduct(product, i)" :loading="product.isDeleting">{{product.isDeleting ? 'Deleting..' : ''}} <i class="fa fa-trash-o" aria-hidden="true"></i>
 				      	</Button>
 				      	<Button v-if="!product.featured" :loading="product.isChanging" :disabled="product.isChanging" type="info" @click="makeFeatured(product, p)" size="small">
 				      		{{product.isChanging ? 'Featuring...' : 'Feature'}}
@@ -142,14 +142,40 @@
 							<Button type="primary" @click="addProduct" :disabled="isAdding" :loading="isAdding">{{isAdding ? 'Saving..' : 'Add Product'}}</Button>
 				        </div>
 				</Modal>
+				<Modal title="Add Product Images" :mask-closable="false" :closable="!isUploadingImage" v-model="AddImageModal" footer-hide>
+					<h3 class="text-center">Add Photos for {{imageData.name}}</h3>
+					<Form>
+						<FormItem label="caption">
+							<Input v-model="imageData.caption"></Input>
+						</FormItem>
+						<FormItem label="Upload Image">
+							<upload-image v-on:image_uploaded="setImageProperty" :token="token" :image="imageData.image"></upload-image>
+							ImageUrl <a v-if="imageData.image!=''" :href="`/product_photos/${imageData.image}`" target="_blank">Photo</a>
+						</FormItem>
+					</Form>
+					
+						<Button @click="submitPhotoData" :loading="isUploadingImage" :disabled="isUploadingImage" type="primary" class="btn btn-primary pull-right">{{isUploadingImage? 'Saving....' : 'Save Image'}}</Button>
+					
+				</Modal>
 			</div>
 		</div>
 	</div>
 </template>
 <script>
+import UploadImage from './uploadProductImage'
 	export default{
+		components:{
+			UploadImage
+		},
 		data(){
 			return {
+				AddImageModal:false,
+				imageData:{
+					product_id:'',
+					caption:'',
+					image:'',
+					name:'',
+				},
 				data: {
 					image_url:'',
 					name:'',
@@ -168,10 +194,44 @@
 				isAdding:false,
 				token:'',
 				isChanging:false,
-				index:-1
+				index:-1,
+				isUploadingImage:false,
 				}
 		},
 		methods: {
+			async submitPhotoData(){
+				if(this.imageData.image=='') return this.e('Image Is Required');
+				if(this.imageData.caption=='') return this.e('Caption Is Required');
+				if(this.imageData.product_id=='') return this.e('Invalid Product Selected');
+				this.isUploadingImage = true;
+				const res = await this.callApi('post', '/seller/product_images', this.imageData);
+				if(res.status == 201){
+					this.s('Image Saved Successfully');
+					this.imageData.caption = '';
+					this.imageData.image = ''
+					this.isUploadingImage = false
+				}else{
+					this.swr()
+					this.isUploadingImage = false
+				}
+
+			},
+
+			setImageProperty(res){
+				this.imageData.image = res
+				console.log(res)
+			},
+			showAddImageModal(product){
+				let obj = {
+					product_id:product.id,
+					caption:'',
+					image:'',
+					name:product.name
+				};
+				this.imageData = obj;
+				this.AddImageModal = true
+
+			},
 			showEditModal(){
 
 			},
