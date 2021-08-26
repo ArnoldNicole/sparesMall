@@ -24,7 +24,7 @@ class CreateProductsTable extends Migration
             $table->string('manufacturer');
             $table->string('color');
             $table->string('size');
-            $table->string('description');
+            $table->text('description');
             $table->string('featured')->default('no');
             $table->softDeletes();
             $table->string('category_id');
